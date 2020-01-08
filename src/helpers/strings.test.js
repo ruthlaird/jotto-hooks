@@ -7,22 +7,40 @@ const testStrings = {
     mermish: {},
 }
 
-it('returns the correct submit string for english', () => {
-    const string = getStringByLanguage('en', 'submit', testStrings);
-    expect(string).toBe('submit');
-});
+describe('language string testing', () => {
+    const mockWarn = jest.fn();
+    let originalWarn;
 
-it('returns the correct submit string for emoji', () => {
-    const string = getStringByLanguage('emoji', 'submit', testStrings);
-    expect(string).toBe('🚀');
-});
+    beforeEach(() => {
+        originalWarn = console.warn;
+        console.warn = mockWarn;
+    });
 
-it('returns english submit string when language does not exist', () => {
-    const string = getStringByLanguage('notALanguage', 'submit', testStrings);
-    expect(string).toBe('submit');
-});
+    afterEach(() => {
+        console.warn = originalWarn;
+    });
 
-it('returns english submit string when submit key does not exist for language', () => {
-    const string = getStringByLanguage('mermish', 'submit', testStrings);
-    expect(string).toBe('submit');
+    it('returns the correct submit string for english', () => {
+        const string = getStringByLanguage('en', 'submit', testStrings);
+        expect(string).toBe('submit');
+        expect(mockWarn).not.toHaveBeenCalled();
+    });
+    
+    it('returns the correct submit string for emoji', () => {
+        const string = getStringByLanguage('emoji', 'submit', testStrings);
+        expect(string).toBe('🚀');
+        expect(mockWarn).not.toHaveBeenCalled();
+    });
+    
+    it('returns english submit string when language does not exist', () => {
+        const string = getStringByLanguage('notALanguage', 'submit', testStrings);
+        expect(string).toBe('submit');
+        expect(mockWarn).toHaveBeenCalledWith('Could not get string [submit] for [notALanguage]');
+    });
+    
+    it('returns english submit string when submit key does not exist for language', () => {
+        const string = getStringByLanguage('mermish', 'submit', testStrings);
+        expect(string).toBe('submit');
+        expect(mockWarn).toHaveBeenCalledWith('Could not get string [submit] for [mermish]');
+    });
 });
