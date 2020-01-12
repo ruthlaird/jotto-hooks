@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import languageContext from './contexts/languageContext';
 import stringsModule from './helpers/strings';
-import strings from './helpers/strings';
 
 /**
  * Functional react component for congratulatory message.
@@ -18,7 +17,7 @@ const Congrats = props => {
     return (
       <div data-test='component-congrats' className='alert alert-success'>
         <span data-test='congrats-message'>
-          {strings.getStringByLanguage(language, 'congrats')}
+          {stringsModule.getStringByLanguage(language, 'congrats')}
         </span>
       </div>
     );
